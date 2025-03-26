@@ -27,13 +27,12 @@ while iteracion:
         
         persona = {
             "nombre": nombre,
-            "notas": {
-                "matematica": matematica,
-                "lengua": lengua,
-                "sociales": sociales,
-                "naturales": naturales
-            }
-        }
+            "notas": [
+                ["matematica", matematica],
+                ["lengua", lengua],
+                ["sociales", sociales],
+                ["naturales", naturales]
+            ]}
 
         personas.append(persona)
         print("-----------------------------------------")
@@ -53,25 +52,24 @@ while iteracion:
         persona_encontrada = next((persona for persona in personas if persona["nombre"] == nombre_buscado), None)
 
         if persona_encontrada:
-            print("-----------------------------------------")
             print("Persona encontrada:", persona_encontrada)
-            print("-----------------------------------------")
+            print("Notas actuales:")
+            for materia, nota in persona_encontrada["notas"]:
+                print(f"  {materia}: {nota}")
 
-            if persona:
-             print(f"Notas actuales: {persona['notas']}")
-            materia = input("Ingrese la materia a modificar (matematica, lengua, sociales, naturales): ").lower()
+            materia = input("Ingrese la materia a modificar (matematicas, lengua, sociales, naturales): ")
 
-            if materia in persona["notas"]:
-                persona["notas"][materia] = float(input(f"Nueva nota para {materia}: "))
-                
-                print("-----------------------------------------")
-                print(f"Nota actualizada con éxito. Nuevas notas: {persona['notas']}")
-                print("-----------------------------------------")
-
+            for i, (materia_actual, _) in enumerate(persona_encontrada["notas"]):
+                if materia_actual.lower() == materia.lower():
+                    nueva_nota = float(input(f"Nueva nota para {materia}: "))
+                    persona_encontrada["notas"][i][1] = nueva_nota
+                    print(f"Nota de {materia} actualizada con éxito.")
+                    break
             else:
                 print("Materia no válida.")
         else:
             print("No se encontró ninguna persona con ese nombre.")
+
 
     elif peticion == "4":
         iteracion = False
